@@ -1,12 +1,28 @@
-import React from "react";
+import React, {useState} from "react";
 
-function PlantCard({ plant }) {
+function PlantCard({plant, onUpdateStock}) {
+  const [inStock, setInStock] = useState(plant.inStock);
+
+  const handleStockToggle = () => {
+    const newInStockStatus = !inStock;
+    setInStock(newInStockStatus);
+
+    onUpdateStock(plant.id, newInStockStatus);
+  };
+
   return (
-    <div className="plant-card">
+    <li className="card" data-testid="plant-item">
       <img src={plant.image} alt={plant.name} />
-      <h3>{plant.name}</h3>
-      <p>${plant.price.toFixed(2)}</p>
-    </div>
+      <h4>{plant.name}</h4>
+      <p>Price: {plant.price}</p>
+      
+        <button
+         className={inStock ? "primary" : ""}
+         onClick={handleStockToggle}
+        >
+          {inStock ? "In Stock" : "Out of Stock"}
+        </button>      
+    </li>
   );
 }
 
